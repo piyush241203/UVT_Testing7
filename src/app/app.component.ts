@@ -25,17 +25,25 @@ import { RouterOutlet, RouterModule } from '@angular/router';
         
         <div *ngIf="isHome()" class="home-page">
           <div class="page-header">
-            <h1>Home <span style="font-size: 1rem; background: #f43f5e; color: #fff; padding: 0.25rem 0.5rem; border-radius: 0.25rem; vertical-align: middle; margin-left: 1rem;">v1.0.0</span></h1>
-            <p class="subtitle">Experience the power of home with our modern interface.</p>
+            <h1>Home <span style="font-size: 1rem; background: #6366f1; color: #fff; padding: 0.25rem 0.5rem; border-radius: 0.25rem; vertical-align: middle; margin-left: 1rem;">v1.1.0</span></h1>
+            <p class="subtitle">Experience the power of Angular with our fully dynamic, enterprise-grade interface.</p>
+          </div>
+          <div class="stat-row">
+            <div class="stat"><span class="stat-value">12</span><span class="stat-label">Active Users</span></div>
+            <div class="stat"><span class="stat-value">98%</span><span class="stat-label">Uptime</span></div>
+            <div class="stat"><span class="stat-value">4.9★</span><span class="stat-label">Rating</span></div>
+            <div class="stat"><span class="stat-value">$24K</span><span class="stat-label">Revenue</span></div>
           </div>
           <div class="card-container">
             <div class="card"><h3>Welcome</h3><p>This is the central hub. Discover your potential.</p><button class="btn">Get Started</button></div>
             <div class="card"><h3>Quick Actions</h3><p>Access your most used tools instantly.</p><button class="btn">View Tools</button></div>
+            <div class="card"><h3>Analytics</h3><p>Real-time performance metrics at a glance.</p><button class="btn">View Report</button></div>
           </div>
           <div class="dynamic-footer">
             <small>System ID: {{ id }} | Last Sync: {{ time }}</small>
           </div>
         </div>
+
       </main>
     </div>
   `,
@@ -59,6 +67,10 @@ import { RouterOutlet, RouterModule } from '@angular/router';
     .dynamic-footer { text-align: center; color: #64748b; margin-top: auto; padding-top: 2rem; border-top: 1px solid #334155; }
     .btn { display: inline-block; padding: 0.75rem 1.5rem; background: #f43f5e; color: #fff; font-weight: bold; border-radius: 0.5rem; text-decoration: none; margin-top: 1rem; cursor: pointer; border: none; }
     .btn:hover { background: #fb7185; }
+    .stat-row { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+    .stat { background: #1e293b; border: 1px solid #334155; border-radius: 0.75rem; padding: 1.25rem 2rem; display: flex; flex-direction: column; gap: 0.25rem; flex: 1; min-width: 120px; }
+    .stat-value { font-size: 2rem; font-weight: 700; color: #6366f1; }
+    .stat-label { font-size: 0.85rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; }
   `]
 })
 export class AppComponent {
