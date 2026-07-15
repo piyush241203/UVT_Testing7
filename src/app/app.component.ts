@@ -25,8 +25,8 @@ import { RouterOutlet, RouterModule } from '@angular/router';
         
         <div *ngIf="isHome()" class="home-page">
           <div class="page-header">
-            <h1>Home <span style="font-size: 1rem; background: #6366f1; color: #fff; padding: 0.25rem 0.5rem; border-radius: 0.25rem; vertical-align: middle; margin-left: 1rem;">v1.1.0</span></h1>
-            <p class="subtitle">Experience the power of Angular with our fully dynamic, enterprise-grade interface.</p>
+            <h1>Home <span class="badge">v1.2.0 (Final RC)</span></h1>
+            <p class="subtitle">Experience the power of Angular with our blazing-fast, reactive interface. Testing git push.</p>
           </div>
           <div class="stat-row">
             <div class="stat"><span class="stat-value">12</span><span class="stat-label">Active Users</span></div>
