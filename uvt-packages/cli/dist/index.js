@@ -106,6 +106,19 @@ function detectWorkspace(cwd) {
 }
 function detectFramework(cwd) {
     try {
+        // PHP detection: check for composer.json first
+        const composerPath = path.join(cwd, 'composer.json');
+        if (fs.existsSync(composerPath)) {
+            const composer = JSON.parse(fs.readFileSync(composerPath, 'utf-8'));
+            const requires = { ...(composer.require || {}), ...(composer['require-dev'] || {}) };
+            if (requires['laravel/framework'])
+                return 'Laravel';
+            return 'PHP';
+        }
+        // Check for plain .php files
+        const hasPhpFiles = fs.existsSync(cwd) && fs.readdirSync(cwd).some(f => f.endsWith('.php'));
+        if (hasPhpFiles)
+            return 'PHP';
         const packageJsonPath = path.join(cwd, 'package.json');
         if (fs.existsSync(packageJsonPath)) {
             const pkg = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
@@ -200,6 +213,8 @@ function generateGHAWorkflow(cwd) {
         }
     }
     catch { }
+    const isLaravel = detectedFramework === 'Laravel';
+    const isPhp = detectedFramework === 'PHP';
     const isAngular = !!(pkgDeps['@angular/core']);
     const isSvelteKit = !!(pkgDeps['@sveltejs/kit']);
     const isSvelte = !!(pkgDeps['svelte']) && !isSvelteKit;
@@ -215,7 +230,9 @@ function generateGHAWorkflow(cwd) {
                 isNext ? 'Next.js' :
                     isNuxt ? 'Nuxt' :
                         isRemix ? 'Remix' :
-                            detectedFramework;
+                            isLaravel ? 'Laravel' :
+                                isPhp ? 'PHP' :
+                                    detectedFramework;
     // Per-framework port
     let devPort;
     if (isAngular) {
@@ -229,6 +246,9 @@ function generateGHAWorkflow(cwd) {
     }
     else if (isVite) {
         devPort = 5173;
+    }
+    else if (isLaravel || isPhp) {
+        devPort = 8000;
     }
     else {
         devPort = 3000;
@@ -260,13 +280,21 @@ function generateGHAWorkflow(cwd) {
         startDevCmd = `npm run serve -- --port ${devPort} &`;
         teardownProcess = 'node';
     }
+    else if (isLaravel) {
+        startDevCmd = `php artisan serve --port ${devPort} &`;
+        teardownProcess = 'php';
+    }
+    else if (isPhp) {
+        startDevCmd = `php -S 0.0.0.0:${devPort} &`;
+        teardownProcess = 'php';
+    }
     else {
         // Vite-based: React, Vue w/ Vite, HTML, plain Svelte
         startDevCmd = `npx vite --port ${devPort} --strictPort &`;
         teardownProcess = 'vite';
     }
     // Build step fault tolerance: non-critical builds are continue-on-error
-    const buildContinueOnError = (!isAngular && !isNext && !isNuxt);
+    const buildContinueOnError = (!isAngular && !isNext && !isNuxt && !isLaravel && !isPhp);
     let ensureCliCmd = '';
     let runCliCmd = '';
     if (isWorkspace) {
@@ -347,6 +375,19 @@ function generateGHAWorkflow(cwd) {
           fi`;
     }
     const setupNodeCache = cacheType ? `cache: '${cacheType}'` : '';
+    const setupPhpStep = (isLaravel || isPhp) ? `
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, xml, ctype, iconv, json
+
+      - name: Install PHP dependencies
+        run: |
+          if [ -f composer.json ]; then
+            composer install --no-progress --no-interaction --prefer-dist --no-dev || true
+          fi
+` : '';
     return `name: Visual Regression Testing
 
 on:
@@ -363,7 +404,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Full history required for selective testing
-${setupPnpm}${setupBun}
+${setupPnpm}${setupBun}${setupPhpStep}
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:

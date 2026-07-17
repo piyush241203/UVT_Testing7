@@ -48,6 +48,7 @@ const framework_next_1 = require("@uvt/framework-next");
 const framework_vue_1 = require("@uvt/framework-vue");
 const framework_angular_1 = require("@uvt/framework-angular");
 const framework_svelte_1 = require("@uvt/framework-svelte");
+const framework_php_1 = require("@uvt/framework-php");
 const provider_playwright_1 = require("@uvt/provider-playwright");
 const provider_percy_1 = require("@uvt/provider-percy");
 // Import refined engine modules
@@ -109,6 +110,7 @@ exports.pluginRegistry.registerFramework(new framework_next_1.NextFrameworkPlugi
 exports.pluginRegistry.registerFramework(new framework_vue_1.VueFrameworkPlugin());
 exports.pluginRegistry.registerFramework(new framework_angular_1.AngularFrameworkPlugin());
 exports.pluginRegistry.registerFramework(new framework_svelte_1.SvelteFrameworkPlugin());
+exports.pluginRegistry.registerFramework(new framework_php_1.PhpFrameworkPlugin());
 exports.pluginRegistry.registerFramework(new html_framework_plugin_js_1.HtmlFrameworkPlugin());
 exports.pluginRegistry.registerProvider(new provider_playwright_1.PlaywrightProvider());
 exports.pluginRegistry.registerProvider(new provider_percy_1.PercyProvider());
