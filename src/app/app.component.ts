@@ -10,7 +10,7 @@ import { RouterOutlet, RouterModule } from '@angular/router';
   template: `
     <div class="app-container">
       <nav class="sidebar">
-        <div class="brand">AngularDemo✨</div>
+        <div class="brand">AngularDemo✨<br><small style="font-size:0.7rem;opacity:0.7">UI Round 2 🎯</small></div>
         <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">🏠 Home</a>
         <a routerLink="/about" routerLinkActive="active">✨ About</a>
         <a routerLink="/dashboard" routerLinkActive="active">✨ Dashboard</a>
@@ -25,8 +25,8 @@ import { RouterOutlet, RouterModule } from '@angular/router';
         
         <div *ngIf="isHome()" class="home-page">
           <div class="page-header">
-            <h1>Home <span class="badge">v1.2.0 (Final RC)</span></h1>
-            <p class="subtitle">Experience the power of Angular with our blazing-fast, reactive interface. End-to-End verified.</p>
+            <h1>Home <span class="badge">UI Round 2 🎯</span></h1>
+            <p class="subtitle">Experience the power of Angular with our blazing-fast, reactive interface. Testing git push.</p>
           </div>
           <div class="stat-row">
             <div class="stat"><span class="stat-value">12</span><span class="stat-label">Active Users</span></div>
@@ -77,7 +77,7 @@ export class AppComponent {
   title = 'angular-demo';
   time = new Date().toLocaleTimeString();
   id = Math.random().toString(36).substr(2, 9);
-  
+
   isHome() {
     return window.location.pathname === '/';
   }
