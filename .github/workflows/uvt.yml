@@ -113,7 +113,7 @@ jobs:
           done
 
       - name: Run visual regression tests
-        run: npx uvt test --changed --port 4200
+        run: npx uvt test --changed --host 127.0.0.1 --port 4200
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
           
