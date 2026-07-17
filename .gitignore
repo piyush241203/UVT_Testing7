@@ -47,4 +47,4 @@ tests/generated/
 /tests/generated/
 !uvt-packages/
 uvt-packages/**/node_modules/
-uvt-packages/**/dist/
+
