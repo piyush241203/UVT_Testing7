@@ -104,12 +104,12 @@ jobs:
         
 
       - name: Start dev server in background
-        run: npm run start &
+        run: npx ng analytics disable && npx ng serve --host 127.0.0.1 --port 4200 &
 
       - name: Wait for local server
         run: |
           for i in {1..60}; do
-            curl -s http://localhost:4200 && break || sleep 2
+            curl -s http://127.0.0.1:4200 && break || sleep 2
           done
 
       - name: Run visual regression tests
