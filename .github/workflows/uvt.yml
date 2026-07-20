@@ -104,18 +104,19 @@ jobs:
         
 
       - name: Start dev server in background
-        run: npx ng analytics disable && npx ng serve --host 127.0.0.1 --port 4200 &
+        run: npm run start &
 
       - name: Wait for local server
         run: |
           for i in {1..60}; do
-            curl -s http://127.0.0.1:4200 && break || sleep 2
+            curl -s http://localhost:4200 && break || sleep 2
           done
 
       - name: Run visual regression tests
-        run: npx uvt test --changed --host 127.0.0.1 --port 4200
+        run: npx percy exec -- npx uvt test --changed --port 4200
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
+
           
       - name: Teardown background processes
         if: always()
